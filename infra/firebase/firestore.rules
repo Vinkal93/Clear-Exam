@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all access across the entire database
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isSuperAdmin() {
+      return isAuthenticated() && request.auth.token.role == 'superadmin';
+    }
+
+    // User profiles: Users can read/write their own document only
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isSuperAdmin();
+      allow create, update: if isOwner(userId);
+      allow delete: if isSuperAdmin();
+    }
+
+    // Public catalog collections: Only published items are readable
+    match /categories/{categoryId} {
+      allow read: if resource.data.isPublished == true || isSuperAdmin();
+      allow write: if isSuperAdmin();
+    }
+
+    match /exams/{examId} {
+      allow read: if resource.data.isPublished == true || isSuperAdmin();
+      allow write: if isSuperAdmin();
+    }
+
+    match /tests/{testId} {
+      allow read: if resource.data.isPublished == true || isSuperAdmin();
+      allow write: if isSuperAdmin();
+    }
+
+    match /question_banks/{questionId} {
+      allow read: if isAuthenticated();
+      allow write: if isSuperAdmin();
+    }
+
+    // RESTRICTED ENCLAVE: Answer keys are NEVER readable or writable via client SDK
+    match /question_bank_keys/{questionId} {
+      allow read, write: if false;
+    }
+
+    // Exam attempts: Readable only by attempt owner. Writes must route through Cloud API
+    match /attempts/{attemptId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow write: if false;
+
+      match /responses/{questionId} {
+        allow read: if isAuthenticated();
+        allow write: if false;
+      }
+    }
+
+    // Results: Readable only by attempt owner. Writes must route through Cloud API
+    match /results/{attemptId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow write: if false;
+    }
+
+    // Audit logs: Strictly internal and immutable
+    match /audit_logs/{logId} {
+      allow read, write: if false;
+    }
+  }
+}
