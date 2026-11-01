@@ -10,7 +10,6 @@ import {
   BookOpen,
   Users,
   LogOut,
-  ShieldAlert,
   ChevronRight
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -36,9 +35,11 @@ export function AdminSidebar({ mobileOpen, onCloseMobile }: SidebarProps) {
       {/* Brand Header */}
       <div className="h-16 flex items-center justify-between px-6 border-b border-slate-800">
         <Link href="/" className="flex items-center space-x-3">
-          <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow">
-            CE
-          </div>
+          <img
+            src="/logo.png"
+            alt="ClearExam Logo"
+            className="h-8 w-8 rounded-lg object-contain bg-white p-0.5 shadow-sm"
+          />
           <div>
             <span className="font-bold text-base tracking-tight">ClearExam</span>
             <span className="block text-[10px] text-indigo-400 font-medium uppercase tracking-wider">

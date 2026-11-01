@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ShieldCheck, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -46,11 +46,18 @@ export default function LoginPage() {
     <div className="max-w-md mx-auto my-12">
       <Card>
         <CardHeader>
-          <div className="flex items-center gap-2 mb-2">
-            <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow">
-              <ShieldCheck className="h-5 w-5" />
+          <div className="flex items-center gap-3 mb-2">
+            <img
+              src="/logo.png"
+              alt="ClearExam Logo"
+              className="h-10 w-10 rounded-xl object-contain shadow-sm border border-slate-200"
+            />
+            <div>
+              <CardTitle>ClearExam Super Admin</CardTitle>
+              <span className="text-[11px] font-semibold text-indigo-600 uppercase tracking-wider">
+                Control Plane Access
+              </span>
             </div>
-            <CardTitle>Super Admin Authentication</CardTitle>
           </div>
           <CardDescription>
             Authenticate with verified administrative credentials to manage ClearExam catalog, users, and security settings.
