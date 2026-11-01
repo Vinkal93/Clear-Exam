@@ -17,13 +17,23 @@ service cloud.firestore {
     }
 
     function isSuperAdmin() {
-      return isAuthenticated() && request.auth.token.role == 'superadmin';
+      return isAuthenticated() && (
+        request.auth.token.role == 'SUPER_ADMIN' ||
+        request.auth.token.role == 'superadmin'
+      );
     }
 
-    // User profiles: Users can read/write their own document only
+    // User profiles:
+    // - Students can read/write their own document only.
+    // - Prohibits self-elevation: role and subscription are immutable from client SDK.
     match /users/{userId} {
       allow read: if isOwner(userId) || isSuperAdmin();
-      allow create, update: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && request.resource.data.role in ['STUDENT', 'student']
+        && request.resource.data.subscription.planId == 'free';
+      allow update: if isOwner(userId)
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.subscription == resource.data.subscription;
       allow delete: if isSuperAdmin();
     }
 
@@ -70,7 +80,7 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // Audit logs: Strictly internal and immutable
+    // Audit logs: Strictly internal and immutable, written by Cloud API
     match /audit_logs/{logId} {
       allow read, write: if false;
     }

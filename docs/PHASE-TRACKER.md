@@ -3,7 +3,7 @@
 | Phase | Title | State | Branch / Commit | Quality Gates Evidence | Blockers / Actions Required |
 |---|---|---|---|---|---|
 | **00** | Foundation & Governance | COMPLETED | `phase-00-foundation` | All contracts, API vitest (3/3), Admin Web build, Android compileDebugKotlin passed | None |
-| **01** | Auth, Users & Permissions | NOT STARTED | — | — | Awaiting Phase 00 sign-off |
+| **01** | Auth, Users & Permissions | COMPLETED | `phase-01-auth` | Auth middleware, RBAC enforcement, 13/13 Vitest tests, Admin Web login/users, Android LoginScreen compile | None |
 | **02** | Admin Dynamic Catalog | NOT STARTED | — | — | Awaiting Phase 01 |
 | **03** | Question Bank & Bulk Import | NOT STARTED | — | — | Awaiting Phase 02 |
 | **04** | Exam Patterns & Test Builder | NOT STARTED | — | — | Awaiting Phase 03 |
