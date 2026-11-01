@@ -1,12 +1,67 @@
-import type { Metadata } from 'next';
+'use client';
+
+import React, { useState } from 'react';
 import './globals.css';
-import { AuthProvider } from '@/context/AuthContext';
+import { AuthProvider, useAuth } from '@/context/AuthContext';
+import { AdminSidebar } from '@/components/layout/AdminSidebar';
+import { Menu, Bell, Shield } from 'lucide-react';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
-  title: 'ClearExam Super Admin Portal',
-  description: 'Authoritative Exam, Catalog, Question Bank & Analytics Management',
-};
+function AdminShell({ children }: { children: React.ReactNode }) {
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const { user } = useAuth();
+
+  return (
+    <div className="flex h-screen overflow-hidden bg-slate-50 text-slate-900">
+      <AdminSidebar
+        mobileOpen={mobileSidebarOpen}
+        onCloseMobile={() => setMobileSidebarOpen(false)}
+      />
+
+      <div className="flex flex-col flex-1 overflow-hidden">
+        {/* Top Header */}
+        <header className="h-16 bg-white border-b border-neutral-border flex items-center justify-between px-4 sm:px-6 z-10">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setMobileSidebarOpen(true)}
+              className="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
+              <span>ClearExam</span>
+              <span>/</span>
+              <span className="text-slate-900 font-semibold">Admin Workspace</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {!user ? (
+              <Link
+                href="/login"
+                className="px-3 py-1.5 rounded-button text-xs font-semibold bg-brand-indigo text-white hover:bg-indigo-700 transition-colors"
+              >
+                Sign In
+              </Link>
+            ) : (
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Live Sync
+                </span>
+              </div>
+            )}
+          </div>
+        </header>
+
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+          <div className="max-w-7xl mx-auto">{children}</div>
+        </main>
+      </div>
+    </div>
+  );
+}
 
 export default function RootLayout({
   children,
@@ -15,46 +70,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="antialiased min-h-screen bg-slate-50 text-slate-900">
+      <body className="antialiased min-h-screen">
         <AuthProvider>
-          <header className="bg-slate-900 text-white border-b border-slate-800">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-              <div className="flex items-center space-x-6">
-                <Link href="/" className="flex items-center space-x-3">
-                  <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow">
-                    CE
-                  </div>
-                  <div>
-                    <span className="font-bold text-lg tracking-tight">ClearExam</span>
-                    <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
-                      Super Admin
-                    </span>
-                  </div>
-                </Link>
-
-                <nav className="hidden md:flex items-center space-x-4 text-sm font-medium">
-                  <Link href="/" className="text-slate-300 hover:text-white transition-colors">
-                    Dashboard
-                  </Link>
-                  <Link href="/admin/users" className="text-slate-300 hover:text-white transition-colors">
-                    Staff & Users (RBAC)
-                  </Link>
-                </nav>
-              </div>
-
-              <div className="flex items-center space-x-4 text-sm">
-                <Link
-                  href="/login"
-                  className="px-3 py-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-200 transition-colors"
-                >
-                  Admin Login
-                </Link>
-              </div>
-            </div>
-          </header>
-          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {children}
-          </main>
+          <AdminShell>{children}</AdminShell>
         </AuthProvider>
       </body>
     </html>

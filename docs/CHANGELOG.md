@@ -2,6 +2,27 @@
 
 All notable changes to the ClearExam platform are documented in this file.
 
+## [Phase 02: Admin Dynamic Catalog] — 2026-11-01
+### Added
+- Unlimited dynamic exam hierarchy: Category → Exam → Syllabus Version → Paper/Subject → Chapter/Topic.
+- Public read-only catalog routes: `/v1/catalog/categories`, `/v1/catalog/exams`, `/v1/catalog/exams/:id`, and `/v1/catalog/exams/:id/subjects`.
+- Role-guarded Super Admin catalog APIs (`CONTENT_ADMIN`, `SUPER_ADMIN`, `EDITOR`):
+  - Real database aggregate metrics endpoint `/v1/admin/catalog/stats` (zero fake numbers).
+  - Category CRUD & instant publish toggle with security audit trail.
+  - Exam CRUD with bilingual labels (English/Hindi), conducting bodies (NTA, UPSC, SSC, etc.), and duration.
+  - Subject and chapter hierarchy creation endpoints.
+- Super Admin Web views:
+  - Persistent desktop sidebar & mobile drawer with active breadcrumbs.
+  - Real metrics Dashboard (`/`) with honest zero states.
+  - Category Manager (`/admin/categories`) with search, filter, and modal.
+  - Exam Manager (`/admin/exams`) with category filters and publish toggle.
+  - Syllabus & Hierarchy Manager (`/admin/exams/[id]/syllabus`) with visual tree view.
+- Android student dynamic catalog integration:
+  - Dynamic horizontal category carousel on `HomeScreen.kt`.
+  - Dynamic exam cards showing duration, questions count, and conducting body.
+  - Clean non-fabricated empty state when no exams are published.
+- Automated API test suite expanded to 21 passing tests (zero regressions).
+
 ## [Phase 01: Auth, Users & Permissions] — 2026-11-01
 ### Added
 - Authoritative Firebase ID token verification middleware (`authMiddleware`) checking revoked and expired tokens.

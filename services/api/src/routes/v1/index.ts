@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { authRouter } from './auth';
 import { adminUsersRouter } from './admin/users';
+import { publicCatalogRouter } from './catalog';
+import { adminCatalogRouter } from './admin/catalog';
 
 export const v1Router = Router();
 
@@ -19,3 +21,9 @@ v1Router.use('/auth', authRouter);
 
 // Administrative user & role management endpoints
 v1Router.use('/admin/users', adminUsersRouter);
+
+// Public dynamic exam catalog (read-only for students/guests)
+v1Router.use('/catalog', publicCatalogRouter);
+
+// Super Admin dynamic catalog management (RBAC guarded)
+v1Router.use('/admin/catalog', adminCatalogRouter);
