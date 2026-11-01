@@ -5,7 +5,7 @@
 | **00** | Foundation & Governance | COMPLETED | `phase-00-foundation` | All contracts, API vitest (3/3), Admin Web build, Android compileDebugKotlin passed | None |
 | **01** | Auth, Users & Permissions | COMPLETED | `phase-01-auth` | Auth middleware, RBAC enforcement, 13/13 Vitest tests, Admin Web login/users, Android LoginScreen compile | None |
 | **02** | Admin Dynamic Catalog | COMPLETED | `phase-02-catalog` | Real count metrics, categories/exams/syllabus CRUD, 21/21 API tests pass, Android dynamic catalog | None |
-| **03** | Question Bank & Bulk Import | NOT STARTED | — | — | Awaiting Phase 02 |
+| **03** | Question Bank & Bulk Import | COMPLETED | `phase-03-questions` | Isolated answer enclave (/question_bank_keys), 6 question types, review workflow, CSV bulk import, 35/35 Vitest tests pass, Next.js 15 build pass | Awaiting User Phase 04 approval |
 | **04** | Exam Patterns & Test Builder | NOT STARTED | — | — | Awaiting Phase 03 |
 | **05** | Secure Backend Exam Engine | NOT STARTED | — | — | Awaiting Phase 04 |
 | **06** | Android Shell & Premium UI | NOT STARTED | — | — | Awaiting Phase 05 |

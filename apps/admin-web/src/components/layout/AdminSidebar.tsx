@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   FolderTree,
   BookOpen,
+  HelpCircle,
   Users,
   LogOut,
   ChevronRight
@@ -27,6 +28,7 @@ export function AdminSidebar({ mobileOpen, onCloseMobile }: SidebarProps) {
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
     { name: 'Exam Categories', href: '/admin/categories', icon: FolderTree },
     { name: 'Exams & Syllabus', href: '/admin/exams', icon: BookOpen },
+    { name: 'Question Bank', href: '/admin/questions', icon: HelpCircle },
     { name: 'Staff & Roles (RBAC)', href: '/admin/users', icon: Users },
   ];
 
@@ -52,7 +54,7 @@ export function AdminSidebar({ mobileOpen, onCloseMobile }: SidebarProps) {
       {/* Nav Menu */}
       <div className="flex-1 py-6 px-3 space-y-1 overflow-y-auto">
         <div className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-          Catalog & System
+          Catalog & Question Engine
         </div>
         {navigation.map((item) => {
           const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
@@ -107,16 +109,21 @@ export function AdminSidebar({ mobileOpen, onCloseMobile }: SidebarProps) {
 
   return (
     <>
-      {/* Desktop Sidebar */}
+      {/* Desktop static sidebar */}
       <aside className="hidden lg:flex lg:flex-shrink-0">
-        <div className="w-64 flex flex-col">{sidebarContent}</div>
+        {sidebarContent}
       </aside>
 
-      {/* Mobile Drawer */}
+      {/* Mobile drawer overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onCloseMobile} />
-          <div className="fixed inset-y-0 left-0 flex z-50">{sidebarContent}</div>
+        <div className="fixed inset-0 z-50 flex lg:hidden">
+          <div
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+            onClick={onCloseMobile}
+          />
+          <div className="relative flex-1 flex flex-col max-w-xs w-full bg-slate-900 shadow-xl">
+            {sidebarContent}
+          </div>
         </div>
       )}
     </>

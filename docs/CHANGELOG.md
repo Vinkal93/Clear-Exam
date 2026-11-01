@@ -2,6 +2,34 @@
 
 All notable changes to the ClearExam platform are documented in this file.
 
+## [Phase 03: Question Bank & Bulk Import] — 2026-11-01
+### Added
+- Multi-Type Question Bank schemas in `@clearexam/contracts`:
+  - 6 distinct exam question types: `SINGLE_CHOICE`, `MULTI_CHOICE`, `TRUE_FALSE`, `ASSERTION_REASON`, `NUMERICAL`, `PASSAGE_GROUP`.
+  - Separation of public student stem (`StudentQuestionSchema`) from protected answer key enclave (`QuestionKeyEnclaveSchema`).
+  - Bilingual support with Hindi translations and LaTeX formula strings.
+- Backend API (`services/api/src/routes/v1/admin/questions.ts`):
+  - `GET /v1/admin/questions`: Multi-facet filtering by exam, subject, chapter, status, type, and difficulty with search and pagination.
+  - `GET /v1/admin/questions/:id`: Protected administrator question retrieval combining stem with encrypted enclave.
+  - `POST /v1/admin/questions`: Authoring endpoint separating stem into `/question_banks/{id}` and answer key into isolated `/question_bank_keys/{id}` enclave with security audit log.
+  - `PUT /v1/admin/questions/:id`: Updates question draft and increments version counter.
+  - `POST /v1/admin/questions/:id/review`: Governed review workflow transitions (`SUBMIT_FOR_REVIEW`, `APPROVE`, `REJECT`, `PUBLISH`, `ARCHIVE`) with role-based gatekeeping (Reviewers/Content Admins).
+  - `POST /v1/admin/questions/:id/clone`: Safe duplication of existing questions into new draft versions.
+  - `DELETE /v1/admin/questions/:id`: Soft-delete question archiving.
+  - `GET /v1/admin/questions/import/template`: Downloadable CSV bulk import template.
+  - `POST /v1/admin/questions/import/preview`: In-memory CSV validator with intra-batch duplicate stem detection and option syntax verification.
+  - `POST /v1/admin/questions/import/commit`: Scalable chunked Firestore batch writes (<= 500 writes per batch).
+- Super Admin Web views (`apps/admin-web`):
+  - Sidebar navigation link for Question Bank with `HelpCircle` icon.
+  - Question Bank Directory (`/admin/questions`) with multi-filtering, search, badges, and quick actions.
+  - Author Question Form (`/admin/questions/new`) supporting 5 question types, bilingual stems, LaTeX preview, numerical tolerances, and dynamic option builders.
+  - Question Review & Edit Portal (`/admin/questions/[id]`) with workflow action banner and review notes feedback.
+  - Bulk Import CSV Wizard (`/admin/questions/import`) with template download, CSV paste/file upload, validation table, and one-click database commit.
+- Verification & Quality Gates:
+  - Vitest test suite expanded to 35 passing tests (14 dedicated question bank tests).
+  - Next.js 15 production build passes with 0 type errors across all 13 routes.
+  - Android Kotlin compilation verified (`compileDebugKotlin`).
+
 ## [Phase 02: Admin Dynamic Catalog] — 2026-11-01
 ### Added
 - Unlimited dynamic exam hierarchy: Category → Exam → Syllabus Version → Paper/Subject → Chapter/Topic.
