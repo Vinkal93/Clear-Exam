@@ -10,6 +10,7 @@ import {
   BookOpen,
   HelpCircle,
   Users,
+  Smartphone,
   LogOut,
   ChevronRight
 } from 'lucide-react';
@@ -30,6 +31,7 @@ export function AdminSidebar({ mobileOpen, onCloseMobile }: SidebarProps) {
     { name: 'Exams & Syllabus', href: '/admin/exams', icon: BookOpen },
     { name: 'Question Bank', href: '/admin/questions', icon: HelpCircle },
     { name: 'Staff & Roles (RBAC)', href: '/admin/users', icon: Users },
+    { name: 'Student UI Experience', href: '/student/dashboard', icon: Smartphone },
   ];
 
   const sidebarContent = (
